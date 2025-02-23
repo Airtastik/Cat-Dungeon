@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\UE5\\Cat-Dungeon\\CatDungeon\\Source\\CatDungeon\\CatDungeon.Build.cs",
+		"D:\\UE5\\Cat-Dungeon\\CatDungeon\\Source\\CatDungeon.Target.cs",
+		"D:\\UE5\\Cat-Dungeon\\CatDungeon\\Source\\CatDungeonEditor.Target.cs"
+	],
+	"EngineVersion": "5.5.3"
+}

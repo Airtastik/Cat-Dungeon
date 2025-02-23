@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\ue5\\cat-dungeon\\catdungeon\\source\\catdungeon\\catdungeon.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\ue5\\cat-dungeon\\catdungeon\\intermediate\\build\\win64\\x64\\catdungeoneditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.inclorderunreal5_3.h.pch",
+        "Includes": [
+            "d:\\ue5\\cat-dungeon\\catdungeon\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\catdungeon\\definitions.catdungeon.h",
+            "d:\\ue5\\cat-dungeon\\catdungeon\\source\\catdungeon\\catdungeon.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-CatDungeon-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\CatDungeonEditor\DebugGame\UnrealEd\SharedPCH.UnrealEd.Project.NonOptimized.ValApi.Cpp20.InclOrderUnreal5_3.h.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\CatDungeon.init.gen.cpp.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\ParkourGameBase.gen.cpp.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\CatDungeon.cpp.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\ParkourGameBase.cpp.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\PerModuleInline.gen.cpp.obj"
+"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\Default.rc2.res"
+/OUT:"D:\UE5\Cat-Dungeon\CatDungeon\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\CatDungeon\UnrealEditor-CatDungeon-Win64-DebugGame.lib"

@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\ue5\\cat-dungeon\\catdungeon\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\catdungeon\\permoduleinline.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\ue5\\cat-dungeon\\catdungeon\\intermediate\\build\\win64\\x64\\catdungeoneditor\\debuggame\\unrealed\\sharedpch.unrealed.project.nonoptimized.valapi.cpp20.inclorderunreal5_3.h.pch",
+        "Includes": [
+            "d:\\ue5\\cat-dungeon\\catdungeon\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\catdungeon\\definitions.catdungeon.h",
+            "c:\\program files\\epic games\\ue_5.5\\engine\\source\\runtime\\core\\public\\hal\\permoduleinline.inl"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
