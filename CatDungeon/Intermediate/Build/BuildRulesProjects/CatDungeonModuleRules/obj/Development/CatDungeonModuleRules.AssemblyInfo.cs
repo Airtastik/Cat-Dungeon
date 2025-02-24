@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CatDungeonModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b94552cdebb71bb8dad81bc009d3a99e078d615")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7b62cbbe495c2d60c32c786dbd004022eb23b67")]
 [assembly: System.Reflection.AssemblyProductAttribute("CatDungeonModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CatDungeonModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

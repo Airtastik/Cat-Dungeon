@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeCatDungeon_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xAF9A1468,
+				0xBF4D67CA,
 				0x0AB9F8AA,
 				METADATA_PARAMS(0, nullptr)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeCatDungeon_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_CatDungeon.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_CatDungeon(Z_Construct_UPackage__Script_CatDungeon, TEXT("/Script/CatDungeon"), Z_Registration_Info_UPackage__Script_CatDungeon, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xAF9A1468, 0x0AB9F8AA));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_CatDungeon(Z_Construct_UPackage__Script_CatDungeon, TEXT("/Script/CatDungeon"), Z_Registration_Info_UPackage__Script_CatDungeon, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xBF4D67CA, 0x0AB9F8AA));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

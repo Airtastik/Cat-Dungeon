@@ -8,7 +8,15 @@
 				"D:/UE5/Cat-Dungeon/CatDungeon/Content/StarterContent/Architecture/Floor_400x400.uasset",
 				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/BP/Gameplay/BP_ParkourGameBase.uasset",
 				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Map/Level01.umap",
-				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/BP/Character/BP_ParkourCharacter.uasset"
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/BP/Character/BP_ParkourCharacter.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Ch14_1001_Diffuse.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Ch14_1001_Glossiness.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Ch14_1001_Normal.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Ch14_1001_Specular.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Ch14_Body.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Runner_Temp.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Runner_Temp_PhysicsAsset.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Mixamo_Temp/Runner_Temp_Skeleton.uasset"
 			]
 		}
 	]
