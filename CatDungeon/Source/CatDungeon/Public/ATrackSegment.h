@@ -23,7 +23,7 @@ protected:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 
-	void CreateSplineMeshes();
+	//void CreateSplineMeshes();
 	
 
 public:	
@@ -33,7 +33,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
 	USplineComponent* SplineComponent;
 
-
+	/*
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
 	class UMaterialInterface* SplineMaterial;
+	*/
+
+	// Static Mesh Component (Movable)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+	class UStaticMeshComponent* TrackMeshComponent;
 };

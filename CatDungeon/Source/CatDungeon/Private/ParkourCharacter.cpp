@@ -108,7 +108,7 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 		FVector CurrentLocation = GetActorLocation();
 
 		// Only update the X and Y positions, keep Z for gravity/jumping
-		NewLocation.Z = CurrentLocation.Z;  // Retain the current height (Z position)
+		//NewLocation.Z = CurrentLocation.Z;  // Retain the current height (Z position)
 
 		// Move the character to the new location (optionally, you can also use SetActorLocation or a smoother movement approach)
 		SetActorLocation(NewLocation);

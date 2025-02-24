@@ -17,13 +17,16 @@ AATrackSegment::AATrackSegment()
     {
         SplineComponent->SetMobility(EComponentMobility::Movable);
     }
+    
+    TrackMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TrackMeshComponent"));
+    RootComponent = TrackMeshComponent;
+    TrackMeshComponent->SetMobility(EComponentMobility::Movable);
 }
 
 // Called when the game starts or when spawned
 void AATrackSegment::BeginPlay()
 {
 	Super::BeginPlay();
-    CreateSplineMeshes();
 }
 
 // Called every frame
@@ -36,10 +39,11 @@ void AATrackSegment::Tick(float DeltaTime)
 void AATrackSegment::OnConstruction(const FTransform& Transform)
 {
     Super::OnConstruction(Transform);
-    CreateSplineMeshes();
+    //CreateSplineMeshes();
 
 }
 
+/*
 void AATrackSegment::CreateSplineMeshes()
 {
     if (!SplineComponent) return;
@@ -65,7 +69,5 @@ void AATrackSegment::CreateSplineMeshes()
 
             SplineMesh->RegisterComponent();
         }
-    }
-    
-}
+    } */
 
