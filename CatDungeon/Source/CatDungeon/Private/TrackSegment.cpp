@@ -13,9 +13,6 @@ ATrackSegment::ATrackSegment()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	TrackMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TrackMesh"));
-	TrackMesh->SetupAttachment(RootComponent);
-
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
     FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
     SplineComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);

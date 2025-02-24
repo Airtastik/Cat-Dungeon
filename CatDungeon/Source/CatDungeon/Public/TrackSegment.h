@@ -38,8 +38,6 @@ public:
 
 	void CreateSplineMeshes();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* TrackMesh;
 
 	UPROPERTY(EditAnywhere)
 	USplineComponent* SplineComponent;

@@ -2,6 +2,8 @@
 
 
 #include "ATrackSegment.h"
+#include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 
 // Sets default values
 AATrackSegment::AATrackSegment()
@@ -21,7 +23,7 @@ AATrackSegment::AATrackSegment()
 void AATrackSegment::BeginPlay()
 {
 	Super::BeginPlay();
-	
+    CreateSplineMeshes();
 }
 
 // Called every frame
@@ -29,5 +31,41 @@ void AATrackSegment::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AATrackSegment::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+    CreateSplineMeshes();
+
+}
+
+void AATrackSegment::CreateSplineMeshes()
+{
+    if (!SplineComponent) return;
+
+    const int32 NumSegments = SplineComponent->GetNumberOfSplineSegments();
+
+    for (int32 i = 0; i < NumSegments; i++)
+    {
+        USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(this);
+        if (SplineMesh)
+        {
+            SplineMesh->SetMobility(EComponentMobility::Movable);
+            SplineMesh->AttachToComponent(SplineComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+            FVector StartPos, StartTangent, EndPos, EndTangent;
+            SplineComponent->GetLocationAndTangentAtSplinePoint(i, StartPos, StartTangent, ESplineCoordinateSpace::Local);
+            SplineComponent->GetLocationAndTangentAtSplinePoint(i + 1, EndPos, EndTangent, ESplineCoordinateSpace::Local);
+
+            SplineMesh->SetStartAndEnd(StartPos, StartTangent, EndPos, EndTangent);
+
+            // Assign a material (Make sure you have a material in your project)
+            SplineMesh->SetMaterial(0, SplineMaterial);
+
+            SplineMesh->RegisterComponent();
+        }
+    }
+    
 }
 

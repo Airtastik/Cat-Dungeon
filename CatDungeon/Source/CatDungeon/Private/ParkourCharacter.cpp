@@ -54,7 +54,7 @@ void AParkourCharacter::Tick(float DeltaTime)
 
 	if (Controller)
 	{
-		AddMovementInput(GetActorForwardVector(), 1.0f);
+		//AddMovementInput(GetActorForwardVector(), 1.0f);
 	}
 }
 
