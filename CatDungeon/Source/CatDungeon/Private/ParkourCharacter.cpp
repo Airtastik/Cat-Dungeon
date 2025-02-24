@@ -4,7 +4,9 @@
 #include "ParkourCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "ATrackSegment.h"
 #include "GameFramework/CharacterMovementComponent.h" 
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AParkourCharacter::AParkourCharacter()
@@ -37,6 +39,7 @@ AParkourCharacter::AParkourCharacter()
 void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	FindAllTrackSegments();
 }
 
 // Called every frame
@@ -55,6 +58,64 @@ void AParkourCharacter::Tick(float DeltaTime)
 	if (Controller)
 	{
 		//AddMovementInput(GetActorForwardVector(), 1.0f);
+		MoveAlongSpline(DeltaTime);
+
+	}
+}
+
+
+void AParkourCharacter::FindAllTrackSegments()
+{
+	TArray<AActor*> FoundTrackSegments;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AATrackSegment::StaticClass(), FoundTrackSegments);
+
+	for (AActor* TrackSegmentActor : FoundTrackSegments)
+	{
+		AATrackSegment* TrackSegment = Cast<AATrackSegment>(TrackSegmentActor);
+		if (TrackSegment)
+		{
+			// Add the TrackSegment to your TrackSegments array
+			TrackSegmentsArray.Add(TrackSegment);
+		}
+	}
+}
+
+void AParkourCharacter::MoveAlongSpline(float DeltaTime)
+{
+	// Check if we have any TrackSegments (splines to follow)
+	if (TrackSegmentsArray.Num() == 0) return;
+
+	// Get the current segment
+	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[0];  // Just an example, you could add logic to cycle through segments
+
+	if (CurrentTrackSegment && CurrentTrackSegment->SplineComponent)
+	{
+		// Get the spline length (total distance)
+		float SplineLength = CurrentTrackSegment->SplineComponent->GetSplineLength();
+
+		// Update the progress along the spline
+		SplineProgress += (MoveSpeed * DeltaTime); // Custom speed factor
+
+		if (SplineProgress > SplineLength)
+		{
+			SplineProgress = 0.0f;  // Restart at the beginning of the spline (or transition to the next segment)
+		}
+
+		// Get the current position on the spline based on SplineProgress
+		FVector NewLocation = CurrentTrackSegment->SplineComponent->GetLocationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
+
+		// Get the current location of the character
+		FVector CurrentLocation = GetActorLocation();
+
+		// Only update the X and Y positions, keep Z for gravity/jumping
+		NewLocation.Z = CurrentLocation.Z;  // Retain the current height (Z position)
+
+		// Move the character to the new location (optionally, you can also use SetActorLocation or a smoother movement approach)
+		SetActorLocation(NewLocation);
+
+		// Optional: Update rotation to face the direction of movement (smooth or directly)
+		FRotator NewRotation = CurrentTrackSegment->SplineComponent->GetRotationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
+		SetActorRotation(NewRotation);
 	}
 }
 

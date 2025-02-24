@@ -24,7 +24,7 @@ protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	void CreateSplineMeshes();
-
+	
 
 public:	
 	// Called every frame

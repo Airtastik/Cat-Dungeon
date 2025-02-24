@@ -26,6 +26,20 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Movement speed along the spline
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float MoveSpeed = 5.0f;
+
+	// Spline references (array of track segments)
+	TArray<class AATrackSegment*> TrackSegmentsArray;
+
+	// To keep track of current position along the spline
+	float SplineProgress = 200.0f;
+
+	void MoveAlongSpline(float DeltaTime);
+
+	void FindAllTrackSegments();
+
 
 private:
 

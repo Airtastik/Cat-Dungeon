@@ -12,7 +12,7 @@
 ATrackSegment::ATrackSegment()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+    /*
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
     FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
     SplineComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -25,19 +25,21 @@ ATrackSegment::ATrackSegment()
 
 	EndTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("EndTrigger"));
 	EndTrigger->SetupAttachment(RootComponent);
+    */
 }
 
 // Called when the game starts or when spawned
 void ATrackSegment::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	/*
 	StartTrigger->OnComponentBeginOverlap.AddDynamic(this, &ATrackSegment::OnTriggerBeginOverlap);
 	StartTrigger->OnComponentEndOverlap.AddDynamic(this, &ATrackSegment::OnTriggerEndOverlap);
 
 
 	EndTrigger->OnComponentBeginOverlap.AddDynamic(this, &ATrackSegment::OnTriggerBeginOverlap);
 	EndTrigger->OnComponentEndOverlap.AddDynamic(this, &ATrackSegment::OnTriggerEndOverlap);
+    */
 }
 
 void ATrackSegment::OnConstruction(const FTransform& Transform)
@@ -53,7 +55,7 @@ void ATrackSegment::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
+/*
 void ATrackSegment::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }
@@ -65,7 +67,7 @@ void ATrackSegment::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent
 
 void ATrackSegment::CreateSplineMeshes()
 {
-    /*
+    
     if (!SplineComponent) return;
 
     const int32 NumSegments = SplineComponent->GetNumberOfSplineSegments();
@@ -90,6 +92,7 @@ void ATrackSegment::CreateSplineMeshes()
             SplineMesh->RegisterComponent();
         }
     }
-    */
+   
 }
+ */
 
