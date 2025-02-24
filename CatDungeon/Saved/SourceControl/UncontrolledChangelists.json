@@ -5,7 +5,10 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
-				"D:/UE5/Cat-Dungeon/CatDungeon/Content/StarterContent/Architecture/Floor_400x400.uasset"
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/StarterContent/Architecture/Floor_400x400.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/BP/Gameplay/BP_ParkourGameBase.uasset",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/Map/Level01.umap",
+				"D:/UE5/Cat-Dungeon/CatDungeon/Content/MyProject/BP/Character/BP_ParkourCharacter.uasset"
 			]
 		}
 	]

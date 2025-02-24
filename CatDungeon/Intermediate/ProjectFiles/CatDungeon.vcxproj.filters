@@ -45,13 +45,25 @@
     <Filter Include="Source\CatDungeon\Private">
       <UniqueIdentifier>{0D1DEA1C-2CE5-3A07-9B53-197AEC4A0452}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\CatDungeon\Private\ParkourCharacter.cpp">
+      <Filter>Source\CatDungeon\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\CatDungeon\Private\ParkourGameBase.cpp">
+      <Filter>Source\CatDungeon\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CatDungeon\Private\ParkourPlayerController.cpp">
       <Filter>Source\CatDungeon\Private</Filter>
     </ClCompile>
     <Filter Include="Source\CatDungeon\Public">
       <UniqueIdentifier>{494CAD81-AB79-3C2A-B8B1-CAE66D07D3F6}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\CatDungeon\Public\ParkourCharacter.h">
+      <Filter>Source\CatDungeon\Public</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\CatDungeon\Public\ParkourGameBase.h">
+      <Filter>Source\CatDungeon\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CatDungeon\Public\ParkourPlayerController.h">
       <Filter>Source\CatDungeon\Public</Filter>
     </ClCompile>
   </ItemGroup>
