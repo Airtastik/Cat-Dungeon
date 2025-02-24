@@ -21,6 +21,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void OnConstruction(const FTransform& Transform) override;
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -33,10 +36,12 @@ public:
 	void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	void CreateSplineMeshes();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* TrackMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline" , meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere)
 	USplineComponent* SplineComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
@@ -49,5 +54,7 @@ public:
 	UBoxComponent* EndTrigger;
 
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
+	class UMaterialInterface* SplineMaterial;
 
 };

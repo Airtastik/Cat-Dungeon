@@ -2,6 +2,11 @@
 
 
 #include "TrackSegment.h"
+#include "Components/BoxComponent.h"
+#include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
+#include "Components/SceneComponent.h"
+
 
 // Sets default values
 ATrackSegment::ATrackSegment()
@@ -12,8 +17,12 @@ ATrackSegment::ATrackSegment()
 	TrackMesh->SetupAttachment(RootComponent);
 
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
-	SplineComponent->SetupAttachment(RootComponent);
-
+    FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
+    SplineComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    if (SplineComponent)
+    {
+        SplineComponent->SetMobility(EComponentMobility::Movable);
+    }
 	StartTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("StartTrigger")); 
 	StartTrigger->SetupAttachment(RootComponent);
 
@@ -34,6 +43,13 @@ void ATrackSegment::BeginPlay()
 	EndTrigger->OnComponentEndOverlap.AddDynamic(this, &ATrackSegment::OnTriggerEndOverlap);
 }
 
+void ATrackSegment::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+    //CreateSplineMeshes();
+
+}
+
 // Called every frame
 void ATrackSegment::Tick(float DeltaTime)
 {
@@ -47,5 +63,36 @@ void ATrackSegment::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedCompone
 
 void ATrackSegment::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+}
+
+
+void ATrackSegment::CreateSplineMeshes()
+{
+    /*
+    if (!SplineComponent) return;
+
+    const int32 NumSegments = SplineComponent->GetNumberOfSplineSegments();
+
+    for (int32 i = 0; i < NumSegments; i++)
+    {
+        USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(this);
+        if (SplineMesh)
+        {
+            SplineMesh->SetMobility(EComponentMobility::Movable);
+            SplineMesh->AttachToComponent(SplineComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+            FVector StartPos, StartTangent, EndPos, EndTangent;
+            SplineComponent->GetLocationAndTangentAtSplinePoint(i, StartPos, StartTangent, ESplineCoordinateSpace::Local);
+            SplineComponent->GetLocationAndTangentAtSplinePoint(i + 1, EndPos, EndTangent, ESplineCoordinateSpace::Local);
+
+            SplineMesh->SetStartAndEnd(StartPos, StartTangent, EndPos, EndTangent);
+
+            // Assign a material (Make sure you have a material in your project)
+            SplineMesh->SetMaterial(0, SplineMaterial);
+
+            SplineMesh->RegisterComponent();
+        }
+    }
+    */
 }
 
