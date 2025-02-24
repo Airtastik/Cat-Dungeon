@@ -25,7 +25,7 @@ AParkourCharacter::AParkourCharacter()
 	CameraFor2D->bUsePawnControlRotation = false;
 
 	CameraFor3D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor3D"));
-	CameraFor3D->SetupAttachment(SpringArmFor2D, USpringArmComponent::SocketName);
+	CameraFor3D->SetupAttachment(SpringArmFor3D, USpringArmComponent::SocketName);
 	CameraFor3D->bUsePawnControlRotation = false;
 
 }
