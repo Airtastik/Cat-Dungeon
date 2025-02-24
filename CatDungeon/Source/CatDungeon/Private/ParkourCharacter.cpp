@@ -37,7 +37,6 @@ AParkourCharacter::AParkourCharacter()
 void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	StandingCameraHeight = CameraFor3D->GetRelativeLocation().Z;
 }
 
 // Called every frame
@@ -53,10 +52,10 @@ void AParkourCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	FVector CameraLocation = CameraFor3D->GetRelativeLocation();
-	CameraFor3D->SetRelativeLocation(FVector(CameraLocation.X, CameraLocation.Y, StandingCameraHeight));
-	CameraFor2D->SetRelativeLocation(FVector(CameraLocation.X, CameraLocation.Y, StandingCameraHeight));
-
+	if (Controller)
+	{
+		AddMovementInput(GetActorForwardVector(), 1.0f);
+	}
 }
 
 // Called to bind functionality to input
@@ -74,7 +73,6 @@ void AParkourCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 void AParkourCharacter::OnCrouchPressed()
 {
 	//bIsCrouching = true;
-	//UE_LOG(LogTemp, Warning, TEXT("OnCrouchPressed"));
 	Super::Crouch();
 
 }
@@ -82,7 +80,6 @@ void AParkourCharacter::OnCrouchPressed()
 void AParkourCharacter::OnCrouchReleased()
 {
 	//bIsCrouching = false;
-	//UE_LOG(LogTemp, Warning, TEXT("OnCrouchReleased"));
 	Super::UnCrouch();
 }
 

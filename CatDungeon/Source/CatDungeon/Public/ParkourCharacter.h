@@ -46,6 +46,5 @@ private:
 
 	void OnJumpPressed();
 
-	float StandingCameraHeight;
 public:
 };
