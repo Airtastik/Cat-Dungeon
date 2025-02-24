@@ -4,6 +4,7 @@
 #include "ParkourCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h" 
 
 // Sets default values
 AParkourCharacter::AParkourCharacter()
@@ -28,19 +29,33 @@ AParkourCharacter::AParkourCharacter()
 	CameraFor3D->SetupAttachment(SpringArmFor3D, USpringArmComponent::SocketName);
 	CameraFor3D->bUsePawnControlRotation = false;
 
+	bIsCrouching = false;
+	bIsJumping = false;
 }
 
 // Called when the game starts or when spawned
 void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	StandingCameraHeight = CameraFor3D->GetRelativeLocation().Z;
 }
 
 // Called every frame
 void AParkourCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (GetCharacterMovement()->IsFalling() == false)
+	{
+		if (bIsJumping)  
+		{
+			StopJumping();
+			bIsJumping = false; 
+		}
+	}
+
+	FVector CameraLocation = CameraFor3D->GetRelativeLocation();
+	CameraFor3D->SetRelativeLocation(FVector(CameraLocation.X, CameraLocation.Y, StandingCameraHeight));
+	CameraFor2D->SetRelativeLocation(FVector(CameraLocation.X, CameraLocation.Y, StandingCameraHeight));
 
 }
 
@@ -48,6 +63,40 @@ void AParkourCharacter::Tick(float DeltaTime)
 void AParkourCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AParkourCharacter::OnCrouchPressed);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AParkourCharacter::OnCrouchReleased);
 
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AParkourCharacter::OnJumpPressed);
+	
+}
+
+void AParkourCharacter::OnCrouchPressed()
+{
+	//bIsCrouching = true;
+	//UE_LOG(LogTemp, Warning, TEXT("OnCrouchPressed"));
+	Super::Crouch();
+
+}
+
+void AParkourCharacter::OnCrouchReleased()
+{
+	//bIsCrouching = false;
+	//UE_LOG(LogTemp, Warning, TEXT("OnCrouchReleased"));
+	Super::UnCrouch();
+}
+
+void AParkourCharacter::OnJumpPressed()
+{
+	//bIsCrouching = false;
+	bIsJumping = true;
+
+	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
+	if (CharMovement)
+	{
+		CharMovement->JumpZVelocity = 800.0f; // Adjust the height of the jump
+		CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
+		Super::Jump();
+	}
 }
 

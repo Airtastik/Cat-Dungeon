@@ -13,9 +13,13 @@ class CATDUNGEON_API AParkourCharacter : public ACharacter
 
 public:
 	AParkourCharacter();
+	bool bIsCrouching;
+	bool bIsJumping;
 
 protected:
 	virtual void BeginPlay() override;
+
+
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -37,5 +41,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* CameraFor2D;
 
+	void OnCrouchPressed();
+	void OnCrouchReleased();
+
+	void OnJumpPressed();
+
+	float StandingCameraHeight;
 public:
 };
