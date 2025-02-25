@@ -24,8 +24,6 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	// Movement speed along the spline
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MoveSpeed = 5.0f;
@@ -40,6 +38,12 @@ public:
 
 	void FindAllTrackSegments();
 
+	void OnCrouchPressed();
+	void OnCrouchReleased();
+	void OnJumpPressed();
+	void SwitchLandLeft();
+	void SwitchLandRight();
+	void Attack();
 
 private:
 
@@ -55,10 +59,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* CameraFor2D;
 
-	void OnCrouchPressed();
-	void OnCrouchReleased();
 
-	void OnJumpPressed();
 
 public:
 };

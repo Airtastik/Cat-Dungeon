@@ -119,17 +119,6 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void AParkourCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AParkourCharacter::OnCrouchPressed);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AParkourCharacter::OnCrouchReleased);
-
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AParkourCharacter::OnJumpPressed);
-	
-}
 
 void AParkourCharacter::OnCrouchPressed()
 {
@@ -156,5 +145,17 @@ void AParkourCharacter::OnJumpPressed()
 		CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
 		Super::Jump();
 	}
+}
+
+void AParkourCharacter::SwitchLandLeft()
+{
+}
+
+void AParkourCharacter::SwitchLandRight()
+{
+}
+
+void AParkourCharacter::Attack()
+{
 }
 
