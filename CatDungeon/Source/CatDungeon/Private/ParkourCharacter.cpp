@@ -20,7 +20,7 @@ AParkourCharacter::AParkourCharacter()
 
 	SpringArmFor3D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor3D"));
 	SpringArmFor3D->SetupAttachment(RootComponent);
-	SpringArmFor3D->TargetArmLength = 500.f;
+	SpringArmFor3D->TargetArmLength = TargetArmLength;
 	SpringArmFor3D->bEnableCameraLag = true;
 	SpringArmFor3D->CameraLagSpeed = 10.0f;
 	SpringArmFor3D->bUsePawnControlRotation = false;
@@ -35,12 +35,15 @@ AParkourCharacter::AParkourCharacter()
 
 	SpringArmFor2D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor2D"));
 	SpringArmFor2D->SetupAttachment(RootComponent);
-	SpringArmFor2D->TargetArmLength = 500.f;
-	SpringArmFor2D->bUsePawnControlRotation = true;
+	SpringArmFor2D->TargetArmLength = 0.f;
+	SpringArmFor2D->bEnableCameraLag = false;  // Disable lag for smooth movement (if enabled)
+	SpringArmFor2D->bInheritPitch = false;     // Prevent pitch (vertical rotation)
+	SpringArmFor2D->bInheritRoll = false;      // Prevent roll (side-to-side rotation)
+	SpringArmFor2D->bUsePawnControlRotation = false;
 
 	CameraFor2D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor2D"));
 	CameraFor2D->SetupAttachment(SpringArmFor2D, USpringArmComponent::SocketName);
-	CameraFor2D->SetRelativeLocation(FVector(-300.0f, 0.0f, 100.0f));
+	CameraFor2D->SetRelativeLocation(FVector(CameraLengthFor2D, 0.0f, CameraHeightFor2D));
 	CameraFor2D->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
 
@@ -54,6 +57,7 @@ void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	FindAllTrackSegments();
+	LowestCameraHeight = 100.f;
 }
 
 // Called every frame
@@ -75,6 +79,21 @@ void AParkourCharacter::Tick(float DeltaTime)
 		MoveAlongSpline(DeltaTime);
 
 	}
+
+	/*
+	// If in 2D mode, lock the camera's Z-position
+	if (bIsIn2DMode)
+	{
+		// Get the current camera position
+		FVector CameraLocation = CameraFor2D->GetComponentLocation();
+
+		// Lock the Z-position (use the desired fixed height, e.g., 100.0f)
+		CameraLocation.Z = CameraHeightFor2D;  // Set your desired fixed height here
+
+		// Apply the updated location back to the camera
+		CameraFor2D->SetWorldLocation(CameraLocation);
+	}
+	*/
 }
 
 
@@ -111,6 +130,10 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[CurrentSegmentIndex];
 
 	if (CurrentTrackSegment->bIsIn2DMode) {
+
+		if (SplineProgress == 0.0f) {
+			LowestCameraHeight = CameraFor2D->GetComponentLocation().Z;
+		}
 		SwitchTo2DMode(CurrentTrackSegment->bISfromRightSide);
 	}
 	else {
@@ -264,14 +287,35 @@ void AParkourCharacter::SwitchTo3DMode()
 	bIsIn2DMode = false;
 	CameraFor3D->SetActive(true);
 	CameraFor2D->SetActive(false);
+	//LowestCameraHeight = 100.f;
+	//UE_LOG(LogTemp, Log, TEXT("SwitchTo3DMode"));
+
 }
 
 void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)
 {
 	bIsIn2DMode = true;
+	if (SpringArmFor2D)
+	{
+		SpringArmFor2D->bEnableCameraLag = false;
+		SpringArmFor2D->bInheritPitch = false;
+		SpringArmFor2D->bInheritRoll = false;
+		SpringArmFor2D->bUsePawnControlRotation = false;
+	}
 	if (bISfromRightSide) {
 		CameraFor2D->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	}
+
+	if (LowestCameraHeight > CameraFor2D->GetComponentLocation().Z) {
+		//LowestCameraHeight = CameraFor2D->GetComponentLocation().Z;
+	}
+
+	FVector CameraLocation = CameraFor2D->GetComponentLocation();
+	CameraLocation.Z = LowestCameraHeight;
+	CameraFor2D->SetWorldLocation(CameraLocation);
+	SpringArmFor2D->TargetArmLength = 0.0f;
+	UE_LOG(LogTemp, Log, TEXT("Camera Z Location: %f, LowestCameraHeight: %f"), CameraFor2D->GetComponentLocation().Z, LowestCameraHeight);
+
 	CameraFor3D->SetActive(false);
 	CameraFor2D->SetActive(true);
 }

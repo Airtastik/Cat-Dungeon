@@ -51,6 +51,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
 	float InterpolateToLane = 1.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	/// <summary>
+	/// 
+	/// </summary>
+	float TargetArmLength = 500.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	/// <summary>
+	/// 
+	/// </summary>
+	float CameraLengthFor2D = -300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	/// <summary>
+	/// 
+	/// </summary>
+	float CameraHeightFor2D = 100.f;
+
 	/// <summary>
 	/// Spline references (array of track segments)
 	/// </summary>
@@ -64,6 +82,7 @@ public:
 	/// <summary>
 	/// Record the gameMode
 	/// </summary>
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "2D")	
 	bool bIsIn2DMode;
 
 
@@ -98,6 +117,7 @@ private:
 	
 	float CurrentLaneOffset;
 	float TargetLaneOffset;
+	float LowestCameraHeight;
 
 	void SwitchTo3DMode();
 	void SwitchTo2DMode(bool bISfromRightSide);
