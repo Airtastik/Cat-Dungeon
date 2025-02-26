@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "PlayerHUD.h"
 #include "ParkourPlayerController.generated.h"
 
 /**
@@ -37,6 +38,28 @@ public:
 
 	void Attack();
 	
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void GetPlayerState() const;
+	void UpdateHUDHealth(float Health);
+	void UpdateHUDScore(int Score);
+	void HandleDeath();
+	void HandleVictory();
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<class UPlayerHUD> PlayerHUDClass;
+
+	/// <summary>
+	/// The actual widget instance that will be displayed in the player's screen
+	/// </summary>
+	UPROPERTY()
+	class UPlayerHUD* PlayerHUDWidget;
+
+	/// <summary>
+	/// Called when the player spawns to create the HUD
+	/// </summary>
+	void CreateHUD();
 private:
 	class AParkourCharacter* ParkourCharacter;
 

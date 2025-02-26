@@ -1,5 +1,12 @@
+#include "CoreMinimal.h"
 #include "ParkourPlayerController.h"
 #include "ParkourCharacter.h"
+#include "Blueprint/UserWidget.h"
+#include "PlayerHUD.h"
+#include "Kismet/GameplayStatics.h"
+
+
+
 
 AParkourPlayerController::AParkourPlayerController()
 {
@@ -9,9 +16,56 @@ void AParkourPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	ParkourCharacter = Cast<AParkourCharacter>(GetCharacter());
+	if (PlayerHUDClass)
+	{
+		CreateHUD();
+	}
 }
 
 void AParkourPlayerController::Tick(float DeltaTime)
+{
+}
+
+void AParkourPlayerController::CreateHUD()
+{
+	if (PlayerHUDClass)
+	{
+		PlayerHUDWidget = CreateWidget<UPlayerHUD>(this, PlayerHUDClass); // Create the widget
+		if (PlayerHUDWidget) // Check if the widget was created successfully
+		{
+			PlayerHUDWidget->AddToViewport(); // Add the widget to the viewport to show it
+		}
+	}
+
+	
+}
+
+void AParkourPlayerController::GetPlayerState() const
+{
+}
+
+void AParkourPlayerController::UpdateHUDHealth(float Health)
+{
+	if (PlayerHUDWidget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UpdateHUDHealth: %f"), Health);
+		PlayerHUDWidget->UpdateHealth(Health);
+	}
+}
+
+void AParkourPlayerController::UpdateHUDScore(int Score)
+{
+	if (PlayerHUDWidget)
+	{
+		PlayerHUDWidget->UpdateScore(Score);
+	}
+}
+
+void AParkourPlayerController::HandleDeath()
+{
+}
+
+void AParkourPlayerController::HandleVictory()
 {
 }
 
