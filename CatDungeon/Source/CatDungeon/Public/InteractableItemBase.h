@@ -25,7 +25,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor);
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult& SweepResult);
 
 	virtual void Activate_Implementation(AActor* Interactor) override;
 
@@ -40,6 +42,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float InteractionValue = 1.0f;
+	/// <summary>
+	/// Collision component for detecting overlaps
+	/// </summary>
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+	class USphereComponent* CollisionComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InteractionValue")
+	float InteractionHealthValue = -1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InteractionValue")
+	float InteractionScoreValue = 5.0f;
 };

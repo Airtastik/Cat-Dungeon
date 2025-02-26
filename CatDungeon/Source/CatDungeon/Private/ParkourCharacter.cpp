@@ -4,6 +4,7 @@
 #include "ParkourCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "ParkourPlayerState.h"
 #include "ATrackSegment.h"
 #include "GameFramework/CharacterMovementComponent.h" 
 #include "Kismet/GameplayStatics.h"
@@ -80,20 +81,6 @@ void AParkourCharacter::Tick(float DeltaTime)
 
 	}
 
-	/*
-	// If in 2D mode, lock the camera's Z-position
-	if (bIsIn2DMode)
-	{
-		// Get the current camera position
-		FVector CameraLocation = CameraFor2D->GetComponentLocation();
-
-		// Lock the Z-position (use the desired fixed height, e.g., 100.0f)
-		CameraLocation.Z = CameraHeightFor2D;  // Set your desired fixed height here
-
-		// Apply the updated location back to the camera
-		CameraFor2D->SetWorldLocation(CameraLocation);
-	}
-	*/
 }
 
 
@@ -181,67 +168,6 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	}
 }
 
-
-/*
-void AParkourCharacter::MoveAlongSpline(float DeltaTime)
-{
-	if (TrackSegmentsArray.Num() == 0) return;
-	if (CurrentSegmentIndex >= TrackSegmentsArray.Num()) {
-		//TODO: Win
-		return;
-	}
-
-	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[CurrentSegmentIndex];
-	USplineComponent* CurrentSpline = CurrentTrackSegment->SplineComponentLeft;
-	switch (CurrentLaneIndex)
-	{
-	case 0:
-		CurrentSpline = CurrentTrackSegment->SplineComponentLeft;
-
-		break;
-	case 1:
-		CurrentSpline = CurrentTrackSegment->SplineComponent;
-
-		break;
-	case 2:
-		CurrentSpline = CurrentTrackSegment->SplineComponentRight;
-
-		break;
-	default:
-		break;
-	}
-	if (CurrentTrackSegment && CurrentSpline)
-	{
-		float SplineLength = CurrentSpline->GetSplineLength();
-		//SplineProgress = FMath::FInterpTo(SplineProgress, SplineProgress + (MoveSpeed * DeltaTime), DeltaTime, InterpolateSpeed);
-		SplineProgress += (MoveSpeed * DeltaTime);
-		if (SplineProgress >= SplineLength)
-		{
-			CurrentSegmentIndex++;
-			SplineProgress = 0.0f;
-		}
-
-		SetActorRotation(CurrentTrackSegment->SplineComponent->GetRotationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World));
-		FVector SplineLocation = CurrentSpline->GetLocationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
-
-		// Smooth lane transition
-		CurrentLaneOffset = FMath::FInterpTo(CurrentLaneOffset, TargetLaneOffset, DeltaTime, InterpolateToLane);
-
-		// Apply lane offset
-		FVector TargetLocation = SplineLocation;
-
-		FVector CurrentLocation = GetActorLocation();
-
-		if (bIsIn2DMode) {
-			//keep Z for gravity/jumping
-			TargetLocation.Z = CurrentLocation.Z;
-		}
-
-		SetActorLocation(TargetLocation);
-	}
-}
-*/
-
 void AParkourCharacter::OnCrouchPressed()
 {
 	Super::Crouch();
@@ -318,6 +244,24 @@ void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)
 
 	CameraFor3D->SetActive(false);
 	CameraFor2D->SetActive(true);
+}
+
+void AParkourCharacter::ModifyHealth(float Amount)
+{
+	AParkourPlayerState* PS = GetPlayerState<AParkourPlayerState>();
+	if (PS)
+	{
+		PS->AddHealth(Amount);
+	}
+}
+
+void AParkourCharacter::ModifyScore(int32 Amount)
+{
+	AParkourPlayerState* PS = GetPlayerState<AParkourPlayerState>();
+	if (PS)
+	{
+		PS->AddScore(Amount);
+	}
 }
 
 

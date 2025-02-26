@@ -98,6 +98,9 @@ public:
 	void Attack();
 	void SwitchLane(int32 LandIndex);
 
+	void ModifyHealth(float Amount);
+	void ModifyScore(int32 Amount);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
