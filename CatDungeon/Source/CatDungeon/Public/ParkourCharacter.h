@@ -82,7 +82,7 @@ public:
 	/// <summary>
 	/// Record the gameMode
 	/// </summary>
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "2D")	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "2D")
 	bool bIsIn2DMode;
 
 
