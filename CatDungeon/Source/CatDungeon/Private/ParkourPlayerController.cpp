@@ -33,7 +33,7 @@ void AParkourPlayerController::SwitchLandLeft()
 {
 	if (ParkourCharacter)
 	{
-		ParkourCharacter->SwitchLandLeft();
+		ParkourCharacter->SwitchLane(ParkourCharacter->GetCurrentLaneIndex() - 1);
 	}
 }
 
@@ -41,12 +41,16 @@ void AParkourPlayerController::SwitchLandRight()
 {
 	if (ParkourCharacter)
 	{
-		ParkourCharacter->SwitchLandRight();
+		ParkourCharacter->SwitchLane(ParkourCharacter->GetCurrentLaneIndex() + 1);
 	}
 }
 
 void AParkourPlayerController::Jump()
 {
+	if (ParkourCharacter)
+	{
+		ParkourCharacter->OnJumpPressed();
+	}
 }
 
 void AParkourPlayerController::CrouchPressed()
@@ -67,8 +71,4 @@ void AParkourPlayerController::CrouchReleased()
 
 void AParkourPlayerController::Attack()
 {
-	if (ParkourCharacter)
-	{
-		ParkourCharacter->OnJumpPressed();
-	}
 }

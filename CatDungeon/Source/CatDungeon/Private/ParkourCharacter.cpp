@@ -13,6 +13,9 @@ AParkourCharacter::AParkourCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	bIsIn2DMode = false;
+	CurrentLaneIndex = 1;
+
 	SpringArmFor2D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor2D"));
 	SpringArmFor2D->SetupAttachment(RootComponent);
 	SpringArmFor2D->TargetArmLength = 500.f;
@@ -33,6 +36,7 @@ AParkourCharacter::AParkourCharacter()
 
 	bIsCrouching = false;
 	bIsJumping = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -80,82 +84,172 @@ void AParkourCharacter::FindAllTrackSegments()
 	}
 }
 
+
+/// <summary>
+/// Let Character move along the Splines
+/// If you reach the end for this Spline, add the CurrentSegmentIndex for enter next Segment
+/// </summary>
+/// <param name="DeltaTime"></param>
 void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 {
-	// Check if we have any TrackSegments (splines to follow)
 	if (TrackSegmentsArray.Num() == 0) return;
+	if (CurrentSegmentIndex >= TrackSegmentsArray.Num()) {
+		//TODO: Win
+		return;
+	}
 
-	// Get the current segment
-	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[0];  // Just an example, you could add logic to cycle through segments
+	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[CurrentSegmentIndex];
 
 	if (CurrentTrackSegment && CurrentTrackSegment->SplineComponent)
 	{
-		// Get the spline length (total distance)
 		float SplineLength = CurrentTrackSegment->SplineComponent->GetSplineLength();
-
-		// Update the progress along the spline
-		SplineProgress += (MoveSpeed * DeltaTime); // Custom speed factor
-
-		if (SplineProgress > SplineLength)
+		//SplineProgress = FMath::FInterpTo(SplineProgress, SplineProgress + (MoveSpeed * DeltaTime), DeltaTime, InterpolateSpeed);
+		SplineProgress += (MoveSpeed * DeltaTime);
+		if (SplineProgress >= SplineLength)
 		{
-			SplineProgress = 0.0f;  // Restart at the beginning of the spline (or transition to the next segment)
+			CurrentSegmentIndex++;
+			SplineProgress = 0.0f;
 		}
 
-		// Get the current position on the spline based on SplineProgress
-		FVector NewLocation = CurrentTrackSegment->SplineComponent->GetLocationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
+		SetActorRotation(CurrentTrackSegment->SplineComponent->GetRotationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World));
+		FVector SplineLocation = CurrentTrackSegment->SplineComponent->GetLocationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
 
-		// Get the current location of the character
+
+		// Smooth lane transition
+		CurrentLaneOffset = FMath::FInterpTo(CurrentLaneOffset, TargetLaneOffset, DeltaTime, InterpolateToLane);
+
+		// Compute right vector for lane offset
+		FVector SplineDirection = CurrentTrackSegment->SplineComponent->GetDirectionAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
+		FVector RightVector = FVector::CrossProduct(FVector::UpVector, SplineDirection).GetSafeNormal();
+
+
+		// Apply lane offset
+		//FVector TargetLocation = SplineLocation + (RightVector * CurrentLaneOffset);
+		//FVector TargetLocation = SplineLocation + (RightVector * CurrentLaneOffset);
+		FVector TargetLocation = SplineLocation + (RightVector * CurrentLaneOffset * CurrentTrackSegment->CurveMutipliers);
+
 		FVector CurrentLocation = GetActorLocation();
 
-		// Only update the X and Y positions, keep Z for gravity/jumping
-		//NewLocation.Z = CurrentLocation.Z;  // Retain the current height (Z position)
+		if (bIsIn2DMode) {
+			//keep Z for gravity/jumping
+			TargetLocation.Z = CurrentLocation.Z;
+		}
 
-		// Move the character to the new location (optionally, you can also use SetActorLocation or a smoother movement approach)
-		SetActorLocation(NewLocation);
+		SetActorLocation(TargetLocation);
+		
 
-		// Optional: Update rotation to face the direction of movement (smooth or directly)
-		FRotator NewRotation = CurrentTrackSegment->SplineComponent->GetRotationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
-		SetActorRotation(NewRotation);
 	}
 }
 
 
+/*
+void AParkourCharacter::MoveAlongSpline(float DeltaTime)
+{
+	if (TrackSegmentsArray.Num() == 0) return;
+	if (CurrentSegmentIndex >= TrackSegmentsArray.Num()) {
+		//TODO: Win
+		return;
+	}
+
+	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[CurrentSegmentIndex];
+	USplineComponent* CurrentSpline = CurrentTrackSegment->SplineComponentLeft;
+	switch (CurrentLaneIndex)
+	{
+	case 0:
+		CurrentSpline = CurrentTrackSegment->SplineComponentLeft;
+
+		break;
+	case 1:
+		CurrentSpline = CurrentTrackSegment->SplineComponent;
+
+		break;
+	case 2:
+		CurrentSpline = CurrentTrackSegment->SplineComponentRight;
+
+		break;
+	default:
+		break;
+	}
+	if (CurrentTrackSegment && CurrentSpline)
+	{
+		float SplineLength = CurrentSpline->GetSplineLength();
+		//SplineProgress = FMath::FInterpTo(SplineProgress, SplineProgress + (MoveSpeed * DeltaTime), DeltaTime, InterpolateSpeed);
+		SplineProgress += (MoveSpeed * DeltaTime);
+		if (SplineProgress >= SplineLength)
+		{
+			CurrentSegmentIndex++;
+			SplineProgress = 0.0f;
+		}
+
+		SetActorRotation(CurrentTrackSegment->SplineComponent->GetRotationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World));
+		FVector SplineLocation = CurrentSpline->GetLocationAtDistanceAlongSpline(SplineProgress, ESplineCoordinateSpace::World);
+
+		// Smooth lane transition
+		CurrentLaneOffset = FMath::FInterpTo(CurrentLaneOffset, TargetLaneOffset, DeltaTime, InterpolateToLane);
+
+		// Apply lane offset
+		FVector TargetLocation = SplineLocation;
+
+		FVector CurrentLocation = GetActorLocation();
+
+		if (bIsIn2DMode) {
+			//keep Z for gravity/jumping
+			TargetLocation.Z = CurrentLocation.Z;
+		}
+
+		SetActorLocation(TargetLocation);
+	}
+}
+*/
+
 void AParkourCharacter::OnCrouchPressed()
 {
-	//bIsCrouching = true;
 	Super::Crouch();
 
 }
 
 void AParkourCharacter::OnCrouchReleased()
 {
-	//bIsCrouching = false;
 	Super::UnCrouch();
 }
 
 void AParkourCharacter::OnJumpPressed()
 {
-	//bIsCrouching = false;
 	bIsJumping = true;
 
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
 	if (CharMovement)
 	{
-		CharMovement->JumpZVelocity = 800.0f; // Adjust the height of the jump
-		CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
+		CharMovement->JumpZVelocity = JumpVerlocity; // Adjust the height of the jump
+		//CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
 		Super::Jump();
 	}
 }
 
-void AParkourCharacter::SwitchLandLeft()
+void AParkourCharacter::SwitchLane(int32 LaneIndex)
 {
-}
+	if (LaneIndex < 0 || LaneIndex > MaxLaneIndex) return;
 
-void AParkourCharacter::SwitchLandRight()
-{
+	CurrentLaneIndex = LaneIndex;
+	TargetLaneOffset = (CurrentLaneIndex - 1) * LaneWidth;
 }
 
 void AParkourCharacter::Attack()
 {
 }
+
+void AParkourCharacter::SwitchTo3DMode()
+{
+	bIsIn2DMode = false;
+	CameraFor3D->SetActive(true);
+	CameraFor2D->SetActive(false);
+}
+
+void AParkourCharacter::SwitchTo2DMode()
+{
+	bIsIn2DMode = true;
+	CameraFor3D->SetActive(true);
+	CameraFor2D->SetActive(false);
+}
+
 

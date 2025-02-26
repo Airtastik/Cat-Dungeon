@@ -23,27 +23,61 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-
-	// Movement speed along the spline
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float MoveSpeed = 5.0f;
+	/// <summary>
+	/// Movement speed along the spline
+	/// </summary>
+	float MoveSpeed = 200.0f;
 
-	// Spline references (array of track segments)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float JumpVerlocity = 500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float InterpolateSpeed = 5.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	int32 MaxLaneIndex = 2;
+
+	/// <summary>
+	/// Width between lanes
+	/// </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	float LaneWidth = 2000.0f;
+
+	/// <summary>
+	/// The target offset for smooth interpolation
+	/// </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	float InterpolateToLane = 1.0f;
+
+	/// <summary>
+	/// Spline references (array of track segments)
+	/// </summary>
 	TArray<class AATrackSegment*> TrackSegmentsArray;
 
-	// To keep track of current position along the spline
-	float SplineProgress = 200.0f;
+	/// <summary>
+	/// To keep track of current position along the spline
+	/// </summary>
+	float SplineProgress = 0.0f;
 
-	void MoveAlongSpline(float DeltaTime);
+	/// <summary>
+	/// Record the gameMode
+	/// </summary>
+	bool bIsIn2DMode;
 
-	void FindAllTrackSegments();
+
+	/// <summary>
+	/// 0: Left, 1: middle, 2: Right
+	/// </summary>
+	/// <returns></returns>
+	int32 GetCurrentLaneIndex() const { return CurrentLaneIndex; }
 
 	void OnCrouchPressed();
 	void OnCrouchReleased();
 	void OnJumpPressed();
-	void SwitchLandLeft();
-	void SwitchLandRight();
 	void Attack();
+	void SwitchLane(int32 LandIndex);
 
 private:
 
@@ -59,7 +93,15 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* CameraFor2D;
 
+	int32 CurrentLaneIndex;
+	int32 CurrentSegmentIndex;
+	
+	float CurrentLaneOffset;
+	float TargetLaneOffset;
 
+	void SwitchTo3DMode();
+	void SwitchTo2DMode();
+	void MoveAlongSpline(float DeltaTime);
+	void FindAllTrackSegments();
 
-public:
 };

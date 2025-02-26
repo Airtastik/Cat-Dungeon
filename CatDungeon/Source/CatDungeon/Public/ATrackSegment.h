@@ -34,9 +34,17 @@ public:
 	USplineComponent* SplineComponent;
 
 	/*
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
-	class UMaterialInterface* SplineMaterial;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
+	USplineComponent* SplineComponentLeft;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
+	USplineComponent* SplineComponentRight;
 	*/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	int CurveMutipliers = 1;
+
 
 	// Static Mesh Component (Movable)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
