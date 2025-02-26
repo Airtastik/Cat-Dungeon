@@ -45,6 +45,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
 	int CurveMutipliers = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	bool bIsIn2DMode = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
+	bool bISfromRightSide = true;
 
 	// Static Mesh Component (Movable)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")

@@ -21,12 +21,17 @@ AParkourCharacter::AParkourCharacter()
 	SpringArmFor3D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor3D"));
 	SpringArmFor3D->SetupAttachment(RootComponent);
 	SpringArmFor3D->TargetArmLength = 500.f;
-	SpringArmFor3D->bUsePawnControlRotation = true;
-
+	SpringArmFor3D->bEnableCameraLag = true;
+	SpringArmFor3D->CameraLagSpeed = 10.0f;
+	SpringArmFor3D->bUsePawnControlRotation = false;
+	SpringArmFor3D->bInheritYaw = true;              // Follow character rotation on yaw
+	SpringArmFor3D->bInheritPitch = false;           // Do not inherit pitch (up/down)
+	SpringArmFor3D->bInheritRoll = false;            // Do not inherit roll
 
 	CameraFor3D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor3D"));
 	CameraFor3D->SetupAttachment(SpringArmFor3D, USpringArmComponent::SocketName);
 	CameraFor3D->bUsePawnControlRotation = false;
+
 
 	SpringArmFor2D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor2D"));
 	SpringArmFor2D->SetupAttachment(RootComponent);
@@ -49,7 +54,6 @@ void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	FindAllTrackSegments();
-	SwitchTo2DMode();
 }
 
 // Called every frame
@@ -105,6 +109,13 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	}
 
 	AATrackSegment* CurrentTrackSegment = TrackSegmentsArray[CurrentSegmentIndex];
+
+	if (CurrentTrackSegment->bIsIn2DMode) {
+		SwitchTo2DMode(CurrentTrackSegment->bISfromRightSide);
+	}
+	else {
+		SwitchTo3DMode();
+	}
 
 	if (CurrentTrackSegment && CurrentTrackSegment->SplineComponent)
 	{
@@ -235,9 +246,13 @@ void AParkourCharacter::OnJumpPressed()
 void AParkourCharacter::SwitchLane(int32 LaneIndex)
 {
 	if (LaneIndex < 0 || LaneIndex > MaxLaneIndex) return;
-
-	CurrentLaneIndex = LaneIndex;
-	TargetLaneOffset = (CurrentLaneIndex - 1) * LaneWidth;
+	if (bIsIn2DMode) {
+		CurrentLaneIndex = 0;
+	}
+	else {
+		CurrentLaneIndex = LaneIndex;
+		TargetLaneOffset = (CurrentLaneIndex - 1) * LaneWidth;
+	}
 }
 
 void AParkourCharacter::Attack()
@@ -251,11 +266,14 @@ void AParkourCharacter::SwitchTo3DMode()
 	CameraFor2D->SetActive(false);
 }
 
-void AParkourCharacter::SwitchTo2DMode()
+void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)
 {
 	bIsIn2DMode = true;
-	CameraFor3D->SetActive(true);
-	CameraFor2D->SetActive(false);
+	if (bISfromRightSide) {
+		CameraFor2D->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	}
+	CameraFor3D->SetActive(false);
+	CameraFor2D->SetActive(true);
 }
 
 

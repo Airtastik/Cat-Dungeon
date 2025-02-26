@@ -100,7 +100,7 @@ private:
 	float TargetLaneOffset;
 
 	void SwitchTo3DMode();
-	void SwitchTo2DMode();
+	void SwitchTo2DMode(bool bISfromRightSide);
 	void MoveAlongSpline(float DeltaTime);
 	void FindAllTrackSegments();
 
