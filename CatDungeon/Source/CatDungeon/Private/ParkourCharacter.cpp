@@ -16,23 +16,28 @@ AParkourCharacter::AParkourCharacter()
 	bIsIn2DMode = false;
 	CurrentLaneIndex = 1;
 
-	SpringArmFor2D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor2D"));
-	SpringArmFor2D->SetupAttachment(RootComponent);
-	SpringArmFor2D->TargetArmLength = 500.f;
-	SpringArmFor2D->bUsePawnControlRotation = true;
+
 
 	SpringArmFor3D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor3D"));
 	SpringArmFor3D->SetupAttachment(RootComponent);
 	SpringArmFor3D->TargetArmLength = 500.f;
 	SpringArmFor3D->bUsePawnControlRotation = true;
 
-	CameraFor2D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor2D"));
-	CameraFor2D->SetupAttachment(SpringArmFor2D, USpringArmComponent::SocketName);
-	CameraFor2D->bUsePawnControlRotation = false;
 
 	CameraFor3D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor3D"));
 	CameraFor3D->SetupAttachment(SpringArmFor3D, USpringArmComponent::SocketName);
 	CameraFor3D->bUsePawnControlRotation = false;
+
+	SpringArmFor2D = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmFor2D"));
+	SpringArmFor2D->SetupAttachment(RootComponent);
+	SpringArmFor2D->TargetArmLength = 500.f;
+	SpringArmFor2D->bUsePawnControlRotation = true;
+
+	CameraFor2D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor2D"));
+	CameraFor2D->SetupAttachment(SpringArmFor2D, USpringArmComponent::SocketName);
+	CameraFor2D->SetRelativeLocation(FVector(-300.0f, 0.0f, 100.0f));
+	CameraFor2D->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+
 
 	bIsCrouching = false;
 	bIsJumping = false;
@@ -44,6 +49,7 @@ void AParkourCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	FindAllTrackSegments();
+	SwitchTo2DMode();
 }
 
 // Called every frame
