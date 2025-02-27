@@ -59,6 +59,7 @@ void AParkourCharacter::BeginPlay()
 	Super::BeginPlay();
 	FindAllTrackSegments();
 	LowestCameraHeight = 100.f;
+           
 }
 
 // Called every frame
