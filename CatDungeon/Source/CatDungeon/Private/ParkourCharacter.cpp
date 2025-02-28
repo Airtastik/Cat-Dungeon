@@ -7,6 +7,7 @@
 #include "ParkourPlayerState.h"
 #include "ATrackSegment.h"
 #include "GameFramework/CharacterMovementComponent.h" 
+#include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -158,11 +159,14 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 
 		FVector CurrentLocation = GetActorLocation();
 
+		TargetLocation.Z = CurrentLocation.Z;
+
+		/*
 		if (bIsIn2DMode) {
 			//keep Z for gravity/jumping
 			TargetLocation.Z = CurrentLocation.Z;
 		}
-
+		*/
 		SetActorLocation(TargetLocation);
 		
 
@@ -172,6 +176,7 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 void AParkourCharacter::OnCrouchPressed()
 {
 	Super::Crouch();
+	GetWorldTimerManager().SetTimer(UncrouchTimer, this, &AParkourCharacter::OnCrouchReleased, uncrouchTime, false);
 
 }
 

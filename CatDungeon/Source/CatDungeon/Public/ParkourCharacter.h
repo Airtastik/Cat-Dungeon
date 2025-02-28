@@ -36,6 +36,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float InterpolateSpeed = 5.0f;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float uncrouchTime = 1.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
 	int32 MaxLaneIndex = 2;
 
@@ -121,6 +125,7 @@ private:
 	float CurrentLaneOffset;
 	float TargetLaneOffset;
 	float LowestCameraHeight;
+	FTimerHandle UncrouchTimer;
 
 	void SwitchTo3DMode();
 	void SwitchTo2DMode(bool bISfromRightSide);
