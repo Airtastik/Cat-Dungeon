@@ -195,13 +195,7 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 		FVector CurrentLocation = GetActorLocation();
 
 		TargetLocation.Z = CurrentLocation.Z;
-
-		/*
-		if (bIsIn2DMode) {
-			//keep Z for gravity/jumping
-			TargetLocation.Z = CurrentLocation.Z;
-		}
-		*/
+		
 		SetActorLocation(TargetLocation);
 		
 
@@ -233,6 +227,7 @@ void AParkourCharacter::OnJumpPressed()
 
 	bIsJumping = true;
 	bIsCrouching = false;
+
 	//SpringArmFor3D->bInheritPitch = false;
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
 	if (CharMovement)
