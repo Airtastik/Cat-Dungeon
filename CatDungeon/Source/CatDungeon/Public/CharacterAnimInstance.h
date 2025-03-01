@@ -22,6 +22,9 @@ public:
 	float Speed;
 
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	bool bIsAttacking;
+
 	void UpdateSpeed(float NewSpeed);
 
 private:
@@ -37,4 +40,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouching;
+
+
 };

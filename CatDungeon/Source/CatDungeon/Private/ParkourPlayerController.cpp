@@ -20,6 +20,11 @@ void AParkourPlayerController::BeginPlay()
 	{
 		CreateHUD();
 	}
+
+	if (RunningSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, RunningSound, ParkourCharacter->GetActorLocation());
+	}
 }
 
 void AParkourPlayerController::Tick(float DeltaTime)
@@ -47,7 +52,10 @@ void AParkourPlayerController::GetPlayerState() const
 void AParkourPlayerController::ReduceHealth(float Health)
 {
 	UpdateHUDHealth(Health);
-
+	if (HittedSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HittedSound, ParkourCharacter->GetActorLocation());
+	}
 }
 
 void AParkourPlayerController::AddHealth(float Health)
@@ -70,16 +78,34 @@ void AParkourPlayerController::UpdateHUDScore(int Score)
 	if (PlayerHUDWidget)
 	{
 		PlayerHUDWidget->UpdateScore(Score);
+		currentScore = Score;
 	}
 }
 
 void AParkourPlayerController::HandleDeath()
 {
+	Endding(false);
 }
 
 void AParkourPlayerController::HandleVictory()
 {
+	Endding(true);
 }
+
+void AParkourPlayerController::Endding(bool bIsWinning)
+{
+	if (EndingHUDClass)
+	{
+		EndingWidget = CreateWidget<UPlayerHUD>(this, EndingHUDClass); // Create the widget
+		if (EndingWidget) // Check if the widget was created successfully
+		{
+			EndingWidget->AddToViewport(); // Add the widget to the viewport to show it
+			PlayerHUDWidget->RemoveFromViewport();
+			EndingWidget->UpdateScore(currentScore);
+		}
+	}
+}
+
 
 /// <summary>
 /// bind with input actions
@@ -100,6 +126,10 @@ void AParkourPlayerController::SwitchLandLeft()
 	if (ParkourCharacter)
 	{
 		ParkourCharacter->SwitchLane(ParkourCharacter->GetCurrentLaneIndex() - 1);
+		if (ChangeLaneSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ChangeLaneSound, ParkourCharacter->GetActorLocation());
+		}
 	}
 }
 
@@ -108,6 +138,10 @@ void AParkourPlayerController::SwitchLandRight()
 	if (ParkourCharacter)
 	{
 		ParkourCharacter->SwitchLane(ParkourCharacter->GetCurrentLaneIndex() + 1);
+		if (ChangeLaneSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ChangeLaneSound, ParkourCharacter->GetActorLocation());
+		}
 	}
 }
 

@@ -24,8 +24,9 @@ void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (!ParkourCharacter) return;
 	 
-	bIsJumping = ParkourCharacter->GetCharacterMovement()->IsFalling();
-	bIsCrouching = ParkourCharacter->GetCharacterMovement()->IsCrouching();
+	bIsJumping = ParkourCharacter->bIsJumping;
+	bIsCrouching = ParkourCharacter->bIsCrouching;
+	bIsAttacking = ParkourCharacter->bIsAttacking;
 	UpdateSpeed(ParkourCharacter->MoveSpeed);
 }
 

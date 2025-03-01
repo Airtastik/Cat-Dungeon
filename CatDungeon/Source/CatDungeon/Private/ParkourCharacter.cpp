@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h" 
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "CharacterAnimInstance.h"
 
 // Sets default values
 AParkourCharacter::AParkourCharacter()
@@ -82,8 +83,7 @@ void AParkourCharacter::Tick(float DeltaTime)
 		if (bIsJumping)  
 		{
 			//SpringArmFor3D->bInheritPitch = true;
-			StopJumping();
-			bIsJumping = false; 
+			//OnJumpRealesed();
 		}
 	}
 
@@ -150,12 +150,18 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	if (CurrentTrackSegment->bIsIn2DMode) {
 
 		if (SplineProgress == 0.0f) {
-			LowestCameraHeight = CameraFor2D->GetComponentLocation().Z;
+			//LowestCameraHeight = CameraFor2D->GetComponentLocation().Z;
+			SwitchLane(1);
 		}
 		SwitchTo2DMode(CurrentTrackSegment->bISfromRightSide);
 	}
 	else {
 		SwitchTo3DMode();
+	}
+
+	if (SplineProgress == 0.0f) {
+		UE_LOG(LogTemp, Warning, TEXT("%d"), CurrentTrackSegment->SegmentValue);
+
 	}
 
 	if (CurrentTrackSegment && CurrentTrackSegment->SplineComponent)
@@ -204,7 +210,9 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 
 void AParkourCharacter::OnCrouchPressed()
 {
+	if (bIsJumping) return;
 	Super::Crouch();
+	bIsCrouching = true;
 	GetWorldTimerManager().SetTimer(UncrouchTimer, this, &AParkourCharacter::OnCrouchReleased, uncrouchTime, false);
 
 }
@@ -212,24 +220,33 @@ void AParkourCharacter::OnCrouchPressed()
 void AParkourCharacter::OnCrouchReleased()
 {
 	Super::UnCrouch();
+	bIsCrouching = false;
 }
 
 void AParkourCharacter::OnJumpPressed()
 {
+	if (bIsCrouching) return;
 
 	FVector CameraLocation = CameraFor3D->GetComponentLocation();
 	LowestCameraHeightFor3D = CameraLocation.Z;
+	GetWorldTimerManager().SetTimer(UnJumpTimer, this, &AParkourCharacter::OnJumpRealesed, unJumpTime, false);
 
 	bIsJumping = true;
+	bIsCrouching = false;
 	//SpringArmFor3D->bInheritPitch = false;
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
 	if (CharMovement)
 	{
 		CharMovement->JumpZVelocity = JumpVerlocity; // Adjust the height of the jump
-		//CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
+		CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
 		Super::Jump();
 	}
+}
 
+void AParkourCharacter::OnJumpRealesed()
+{
+	bIsJumping = false;
+	StopJumping();
 }
 
 void AParkourCharacter::SwitchLane(int32 LaneIndex)
@@ -246,6 +263,19 @@ void AParkourCharacter::SwitchLane(int32 LaneIndex)
 
 void AParkourCharacter::Attack()
 {
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AParkourCharacter::OnJumpRealesed, unJumpTime, false);
+	bIsAttacking = true;
+
+}
+
+void AParkourCharacter::OnAttackFinished()
+{
+	bIsAttacking = false;
+	UCharacterAnimInstance* AnimInstance = Cast<UCharacterAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (AnimInstance)
+	{
+	}
 }
 
 void AParkourCharacter::SwitchTo3DMode()

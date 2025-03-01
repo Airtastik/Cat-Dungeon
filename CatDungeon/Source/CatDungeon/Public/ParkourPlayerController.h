@@ -47,6 +47,7 @@ public:
 	void UpdateHUDScore(int Score);
 	void HandleDeath();
 	void HandleVictory();
+	void Endding(bool bIsWinning);
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	USoundBase* JumpSound;
@@ -63,16 +64,27 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	USoundBase* AddHealthSound;
 
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* ChangeLaneSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* RunningSound;
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<class UPlayerHUD> PlayerHUDClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<class UPlayerHUD> EndingHUDClass;
 
 	/// <summary>
 	/// The actual widget instance that will be displayed in the player's screen
 	/// </summary>
 	UPROPERTY()
 	class UPlayerHUD* PlayerHUDWidget;
+
+	UPROPERTY()
+	class UPlayerHUD* EndingWidget;
 
 	/// <summary>
 	/// Called when the player spawns to create the HUD
@@ -81,5 +93,5 @@ protected:
 private:
 	class AParkourCharacter* ParkourCharacter;
 
-
+	int32 currentScore = 0;
 };

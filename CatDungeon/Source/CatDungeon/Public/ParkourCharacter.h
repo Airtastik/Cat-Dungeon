@@ -15,6 +15,7 @@ public:
 	AParkourCharacter();
 	bool bIsCrouching;
 	bool bIsJumping;
+	bool bIsAttacking;
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,6 +49,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float uncrouchTime = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float unJumpTime = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float attackTime = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
 	int32 MaxLaneIndex = 2;
@@ -118,6 +125,10 @@ public:
 	void OnCrouchPressed();
 	void OnCrouchReleased();
 	void OnJumpPressed();
+	void OnJumpRealesed();
+	void OnAttackFinished();
+
+
 	void Attack();
 	void SwitchLane(int32 LandIndex);
 
@@ -148,6 +159,8 @@ private:
 
 
 	FTimerHandle UncrouchTimer;
+	FTimerHandle UnJumpTimer;
+	FTimerHandle AttackTimer;
 
 	void SwitchTo3DMode();
 	void SwitchTo2DMode(bool bISfromRightSide);
