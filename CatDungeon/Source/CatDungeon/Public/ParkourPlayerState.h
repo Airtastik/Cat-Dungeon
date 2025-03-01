@@ -37,7 +37,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayerStats")
     void Victory();
 
-    void NotifyHealthChanged();
+    void NotifyHealthAdded();
+    void NotifyHealthReduced();
+
     void NotifyScoreChanged();
 
 

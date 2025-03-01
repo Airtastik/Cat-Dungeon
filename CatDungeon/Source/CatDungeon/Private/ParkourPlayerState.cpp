@@ -11,8 +11,18 @@ void AParkourPlayerState::BeginPlay()
 	Health = MaxHealth; 
 
 	// Optionally, notify the PlayerController to update the HUD right away
-	NotifyHealthChanged();
 	NotifyScoreChanged();
+
+	APlayerController* PlayerController = GetOwner<APlayerController>();
+	if (PlayerController)
+	{
+		AParkourPlayerController* PC = Cast<AParkourPlayerController>(PlayerController);
+		if (PC)
+		{
+			// Update the health on the HUD
+			PC->UpdateHUDHealth(Health);
+		}
+	}
 }
 
 void AParkourPlayerState::AddHealth(float Amount)
@@ -29,7 +39,12 @@ void AParkourPlayerState::AddHealth(float Amount)
 		Die();
 	}
 
-	NotifyHealthChanged();
+	if (Amount < 0) {
+		NotifyHealthReduced();
+	}
+	else {
+		NotifyHealthAdded();
+	}
 }
 
 void AParkourPlayerState::AddScore(int32 Amount)
@@ -66,7 +81,7 @@ void AParkourPlayerState::Die()
 	}
 }
 
-void AParkourPlayerState::NotifyHealthChanged()
+void AParkourPlayerState::NotifyHealthAdded()
 {
 	APlayerController* PlayerController = GetOwner<APlayerController>();
 	if (PlayerController)
@@ -75,10 +90,25 @@ void AParkourPlayerState::NotifyHealthChanged()
 		if (PC)
 		{
 			// Update the health on the HUD
-			PC->UpdateHUDHealth(Health);
+			PC->AddHealth(Health);
 		}
 	}
 	
+}
+
+void AParkourPlayerState::NotifyHealthReduced()
+{
+	APlayerController* PlayerController = GetOwner<APlayerController>();
+	if (PlayerController)
+	{
+		AParkourPlayerController* PC = Cast<AParkourPlayerController>(PlayerController);
+		if (PC)
+		{
+			// Update the health on the HUD
+			PC->ReduceHealth(Health);
+		}
+	}
+
 }
 
 void AParkourPlayerState::NotifyScoreChanged()

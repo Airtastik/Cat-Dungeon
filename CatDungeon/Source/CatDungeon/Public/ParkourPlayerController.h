@@ -40,10 +40,28 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void GetPlayerState() const;
+	void ReduceHealth(float Health);
+	void AddHealth(float Health);
+
 	void UpdateHUDHealth(float Health);
 	void UpdateHUDScore(int Score);
 	void HandleDeath();
 	void HandleVictory();
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* JumpSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* CrouchSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* AttackSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* HittedSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundBase* AddHealthSound;
 
 protected:
 

@@ -44,6 +44,18 @@ void AParkourPlayerController::GetPlayerState() const
 {
 }
 
+void AParkourPlayerController::ReduceHealth(float Health)
+{
+	UpdateHUDHealth(Health);
+
+}
+
+void AParkourPlayerController::AddHealth(float Health)
+{
+	UpdateHUDHealth(Health);
+}
+
+
 void AParkourPlayerController::UpdateHUDHealth(float Health)
 {
 	if (PlayerHUDWidget)
@@ -104,6 +116,10 @@ void AParkourPlayerController::Jump()
 	if (ParkourCharacter)
 	{
 		ParkourCharacter->OnJumpPressed();
+		if (JumpSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, JumpSound, ParkourCharacter->GetActorLocation());
+		}
 	}
 }
 
@@ -112,6 +128,10 @@ void AParkourPlayerController::CrouchPressed()
 	if (ParkourCharacter)
 	{
 		ParkourCharacter->OnCrouchPressed();
+		if (CrouchSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, CrouchSound, ParkourCharacter->GetActorLocation());
+		}
 	}
 }
 
@@ -119,10 +139,14 @@ void AParkourPlayerController::CrouchReleased()
 {
 	if (ParkourCharacter)
 	{
-		ParkourCharacter->OnCrouchReleased();
+		//ParkourCharacter->OnCrouchReleased();
 	}
 }
 
 void AParkourPlayerController::Attack()
 {
+	if (AttackSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, AttackSound, ParkourCharacter->GetActorLocation());
+	}
 }
