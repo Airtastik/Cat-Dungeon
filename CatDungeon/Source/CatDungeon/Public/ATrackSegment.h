@@ -33,14 +33,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
 	USplineComponent* SplineComponent;
 
-	/*
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
-	USplineComponent* SplineComponentLeft;
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spline", meta = (AllowPrivateAccess = "true"))
-	USplineComponent* SplineComponentRight;
-	*/
+	// Integer value to be used for sorting
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Track Segment")
+	int SegmentValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lane")
 	int CurveMutipliers = 1;
@@ -54,4 +49,9 @@ public:
 	// Static Mesh Component (Movable)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 	class UStaticMeshComponent* TrackMeshComponent;
+
+	int GetSegmentValue() const { return SegmentValue; }
+
+	// Setter for SegmentValue
+	void SetSegmentValue(int NewValue) { SegmentValue = NewValue; }
 };

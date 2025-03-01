@@ -70,17 +70,27 @@ public:
 	/// </summary>
 	float TargetArmLength = 500.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "2DCamera")
 	/// <summary>
 	/// 
 	/// </summary>
-	float CameraLengthFor2D = -300.f;
+	float CameraLengthFor2D = -100.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "2DCamera")
 	/// <summary>
 	/// 
 	/// </summary>
-	float CameraHeightFor2D = 100.f;
+	float CameraZFor2D = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "2DCamera")
+	/// <summary>
+	/// 
+	/// </summary>
+	float CameraHeightFor2D = 300.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+
+	float LowestCameraHeightFor3D = 300.f;
 
 	/// <summary>
 	/// Spline references (array of track segments)
@@ -134,6 +144,9 @@ private:
 	float CurrentLaneOffset;
 	float TargetLaneOffset;
 	float LowestCameraHeight;
+
+
+
 	FTimerHandle UncrouchTimer;
 
 	void SwitchTo3DMode();

@@ -45,7 +45,7 @@ AParkourCharacter::AParkourCharacter()
 
 	CameraFor2D = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraFor2D"));
 	CameraFor2D->SetupAttachment(SpringArmFor2D, USpringArmComponent::SocketName);
-	CameraFor2D->SetRelativeLocation(FVector(CameraLengthFor2D, 0.0f, CameraHeightFor2D));
+	CameraFor2D->SetRelativeLocation(FVector(CameraLengthFor2D, CameraZFor2D, CameraHeightFor2D));
 	CameraFor2D->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
 
@@ -60,19 +60,28 @@ void AParkourCharacter::BeginPlay()
 	Super::BeginPlay();
 	FindAllTrackSegments();
 	LowestCameraHeight = 100.f;
-           
+	//LowestCameraHeightFor3D = 100.f;
 	GetWorldTimerManager().SetTimer(SpeedTimerHandle, this, &AParkourCharacter::IncreaseMoveSpeed, SpeedInterval, true);
+	CameraFor2D->SetRelativeLocation(FVector(CameraLengthFor2D, CameraZFor2D, CameraHeightFor2D));
+
 
 }
 
 // Called every frame
 void AParkourCharacter::Tick(float DeltaTime)
 {
+
+		FVector CameraLocation = CameraFor3D->GetComponentLocation();
+		CameraLocation.Z = LowestCameraHeightFor3D;
+		CameraFor3D->SetWorldLocation(CameraLocation);
+	
+
 	Super::Tick(DeltaTime);
 	if (GetCharacterMovement()->IsFalling() == false)
 	{
 		if (bIsJumping)  
 		{
+			//SpringArmFor3D->bInheritPitch = true;
 			StopJumping();
 			bIsJumping = false; 
 		}
@@ -90,8 +99,6 @@ void AParkourCharacter::Tick(float DeltaTime)
 void AParkourCharacter::IncreaseMoveSpeed()
 {
 	MoveSpeed += SpeedIncrement;
-	UE_LOG(LogTemp, Warning, TEXT("New MoveSpeed: %f"), MoveSpeed);
-
 	if (MoveSpeed >= MaxSpeed) {
 		StopSpeedIncrease();
 	}
@@ -117,6 +124,11 @@ void AParkourCharacter::FindAllTrackSegments()
 			TrackSegmentsArray.Add(TrackSegment);
 		}
 	}
+
+	TrackSegmentsArray.Sort([](const AATrackSegment& A, const AATrackSegment& B)
+		{
+			return A.GetSegmentValue() < B.GetSegmentValue();
+		});
 }
 
 
@@ -204,8 +216,12 @@ void AParkourCharacter::OnCrouchReleased()
 
 void AParkourCharacter::OnJumpPressed()
 {
-	bIsJumping = true;
 
+	FVector CameraLocation = CameraFor3D->GetComponentLocation();
+	LowestCameraHeightFor3D = CameraLocation.Z;
+
+	bIsJumping = true;
+	//SpringArmFor3D->bInheritPitch = false;
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
 	if (CharMovement)
 	{
@@ -213,6 +229,7 @@ void AParkourCharacter::OnJumpPressed()
 		//CharMovement->GravityScale = 1.5f;   // Adjust gravity (default is 1.0)
 		Super::Jump();
 	}
+
 }
 
 void AParkourCharacter::SwitchLane(int32 LaneIndex)
@@ -240,6 +257,11 @@ void AParkourCharacter::SwitchTo3DMode()
 	//UE_LOG(LogTemp, Log, TEXT("SwitchTo3DMode"));
 	bIsJumping = false;
 	bIsCrouched = false;
+
+	if (LowestCameraHeightFor3D > CameraFor3D->GetComponentLocation().Z) {
+		//LowestCameraHeightFor3D = CameraFor3D->GetComponentLocation().Z;
+	}
+
 }
 
 void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)
@@ -263,8 +285,6 @@ void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)
 	FVector CameraLocation = CameraFor2D->GetComponentLocation();
 	CameraLocation.Z = LowestCameraHeight;
 	CameraFor2D->SetWorldLocation(CameraLocation);
-	SpringArmFor2D->TargetArmLength = 0.0f;
-	UE_LOG(LogTemp, Log, TEXT("Camera Z Location: %f, LowestCameraHeight: %f"), CameraFor2D->GetComponentLocation().Z, LowestCameraHeight);
 
 	CameraFor3D->SetActive(false);
 	CameraFor2D->SetActive(true);

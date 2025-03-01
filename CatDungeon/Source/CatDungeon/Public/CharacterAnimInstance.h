@@ -21,8 +21,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
 	float Speed;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	float AnimationSpeedMultiplier;
 
 	void UpdateSpeed(float NewSpeed);
 
