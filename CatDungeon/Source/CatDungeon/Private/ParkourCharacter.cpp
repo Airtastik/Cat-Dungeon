@@ -258,7 +258,9 @@ void AParkourCharacter::SwitchLane(int32 LaneIndex)
 
 void AParkourCharacter::Attack()
 {
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &AParkourCharacter::OnJumpRealesed, unJumpTime, false);
+	if (bIsAttacking || bIsJumping || bIsCrouched) return;
+	GetWorldTimerManager().ClearTimer(AttackTimer);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AParkourCharacter::OnAttackFinished, attackTime, false);
 	bIsAttacking = true;
 
 }
@@ -266,11 +268,6 @@ void AParkourCharacter::Attack()
 void AParkourCharacter::OnAttackFinished()
 {
 	bIsAttacking = false;
-	UCharacterAnimInstance* AnimInstance = Cast<UCharacterAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (AnimInstance)
-	{
-	}
 }
 
 void AParkourCharacter::SwitchTo3DMode()
