@@ -61,6 +61,8 @@ void AParkourCharacter::BeginPlay()
 	FindAllTrackSegments();
 	LowestCameraHeight = 100.f;
            
+	GetWorldTimerManager().SetTimer(SpeedTimerHandle, this, &AParkourCharacter::IncreaseMoveSpeed, SpeedInterval, true);
+
 }
 
 // Called every frame
@@ -85,6 +87,21 @@ void AParkourCharacter::Tick(float DeltaTime)
 
 }
 
+void AParkourCharacter::IncreaseMoveSpeed()
+{
+	MoveSpeed += SpeedIncrement;
+	UE_LOG(LogTemp, Warning, TEXT("New MoveSpeed: %f"), MoveSpeed);
+
+	if (MoveSpeed >= MaxSpeed) {
+		StopSpeedIncrease();
+	}
+}
+
+void AParkourCharacter::StopSpeedIncrease()
+{
+	GetWorldTimerManager().ClearTimer(SpeedTimerHandle);
+
+}
 
 void AParkourCharacter::FindAllTrackSegments()
 {
@@ -221,7 +238,8 @@ void AParkourCharacter::SwitchTo3DMode()
 	CameraFor2D->SetActive(false);
 	//LowestCameraHeight = 100.f;
 	//UE_LOG(LogTemp, Log, TEXT("SwitchTo3DMode"));
-
+	bIsJumping = false;
+	bIsCrouched = false;
 }
 
 void AParkourCharacter::SwitchTo2DMode(bool bISfromRightSide)

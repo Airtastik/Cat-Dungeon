@@ -31,6 +31,15 @@ public:
 	float MoveSpeed = 200.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SpeedIncrement = 50.0f; // Speed added each time interval
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float SpeedInterval = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float MaxSpeed = 800.0f; // Speed added each time interval
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float JumpVerlocity = 500.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -131,5 +140,11 @@ private:
 	void SwitchTo2DMode(bool bISfromRightSide);
 	void MoveAlongSpline(float DeltaTime);
 	void FindAllTrackSegments();
+	FTimerHandle SpeedTimerHandle;
 
+	// Function to increase speed
+	void IncreaseMoveSpeed();
+
+	// Function to stop the speed increase
+	void StopSpeedIncrease();
 };

@@ -18,6 +18,14 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
+	float Speed;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
+	float AnimationSpeedMultiplier;
+
+	void UpdateSpeed(float NewSpeed);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))

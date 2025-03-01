@@ -2,6 +2,7 @@
 
 #include "ParkourPlayerController.h"
 #include "ParkourPlayerState.h"
+#include "TimerManager.h"
 #include "ParkourCharacter.h"
 
 void AParkourPlayerState::BeginPlay()
@@ -23,6 +24,7 @@ void AParkourPlayerState::BeginPlay()
 			PC->UpdateHUDHealth(Health);
 		}
 	}
+	StartScoring();
 }
 
 void AParkourPlayerState::AddHealth(float Amount)
@@ -45,6 +47,16 @@ void AParkourPlayerState::AddHealth(float Amount)
 	else {
 		NotifyHealthAdded();
 	}
+}
+
+void AParkourPlayerState::StartScoring()
+{
+	GetWorldTimerManager().SetTimer(ScoreTimerHandle, this, &AParkourPlayerState::IncreaseScore, ScoreInterval, true);
+}
+
+void AParkourPlayerState::IncreaseScore()
+{
+	AddScore(ScoreIncrement);
 }
 
 void AParkourPlayerState::AddScore(int32 Amount)
