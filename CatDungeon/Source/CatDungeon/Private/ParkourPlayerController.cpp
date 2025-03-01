@@ -145,8 +145,13 @@ void AParkourPlayerController::CrouchReleased()
 
 void AParkourPlayerController::Attack()
 {
-	if (AttackSound)
+	if (ParkourCharacter)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, AttackSound, ParkourCharacter->GetActorLocation());
+
+		if (AttackSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, AttackSound, ParkourCharacter->GetActorLocation());
+		}
+		ParkourCharacter->Attack();
 	}
 }

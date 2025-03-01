@@ -53,4 +53,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "InteractionValue")
 	float InteractionScoreValue = 5.0f;
+
+private:
+	bool bIsActive = true;
 };

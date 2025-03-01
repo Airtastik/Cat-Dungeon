@@ -34,7 +34,7 @@ AInteractableItemBase::AInteractableItemBase()
 void AInteractableItemBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	bIsActive = true;
 }
 
 // Called every frame
@@ -47,7 +47,7 @@ void AInteractableItemBase::Tick(float DeltaTime)
 
 void AInteractableItemBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if (OtherActor && OtherActor != this)
+    if (OtherActor && OtherActor != this && bIsActive)
     {
         AParkourCharacter* Character = Cast<AParkourCharacter>(OtherActor);
         if (Character)
@@ -77,6 +77,7 @@ void AInteractableItemBase::InteractWithPlayer_Implementation(AParkourCharacter*
         {
             PS->AddHealth(InteractionHealthValue);  // Example: Heals player
             PS->AddScore(InteractionScoreValue);       // Example: Increases score
+            bIsActive = false;
         }
     }
 }

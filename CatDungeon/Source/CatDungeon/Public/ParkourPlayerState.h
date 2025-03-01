@@ -26,6 +26,12 @@ public:
     UPROPERTY(BlueprintReadWrite, Category = "PlayerStats")
     float Health;
 
+    UPROPERTY(BlueprintReadWrite, Category = "Score")
+    int32 ScoreIncrement = 1;  //
+
+    UPROPERTY(BlueprintReadWrite, Category = "Score")
+    float ScoreInterval = 0.5f;
+
     // Function to add health
     UFUNCTION(BlueprintCallable, Category = "PlayerStats")
     void AddHealth(float Amount);
@@ -49,4 +55,10 @@ private:
 
     UFUNCTION(BlueprintCallable, Category = "PlayerStats")
     void Die();
+
+    void StartScoring();
+    void IncreaseScore();
+
+    FTimerHandle ScoreTimerHandle; 
+
 };
