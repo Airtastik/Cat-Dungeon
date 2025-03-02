@@ -36,8 +36,19 @@ public:
 	// Implement InteractWithPlayer function from the interface
 	virtual void InteractWithPlayer_Implementation(class AParkourCharacter* Player) override;
 
+	void KilledByPlayer(class AParkourCharacter* Player);
+
 	// Implement GetInteractionValue function from the interface
 	virtual float GetInteractionValue_Implementation() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	bool bIsKillable = false; //
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	bool bIsActive = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	bool bbeKilled = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UStaticMeshComponent* MeshComponent;
@@ -55,5 +66,4 @@ public:
 	float InteractionScoreValue = 5.0f;
 
 private:
-	bool bIsActive = true;
 };

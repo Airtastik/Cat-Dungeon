@@ -52,7 +52,13 @@ void AInteractableItemBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, 
         AParkourCharacter* Character = Cast<AParkourCharacter>(OtherActor);
         if (Character)
         {
-            InteractWithPlayer_Implementation(Character);
+			if (bIsKillable && Character->bIsAttacking)
+			{
+				KilledByPlayer(Character);
+			}
+            else {
+                InteractWithPlayer_Implementation(Character);
+            }
         }
     }
 }
@@ -76,8 +82,25 @@ void AInteractableItemBase::InteractWithPlayer_Implementation(AParkourCharacter*
         if (PS)
         {
             PS->AddHealth(InteractionHealthValue);  // Example: Heals player
+            if (!bIsKillable) {
+                PS->AddScore(InteractionScoreValue);
+            }// Example: Increases score
+            bIsActive = false;
+        }
+    }
+}
+
+void AInteractableItemBase::KilledByPlayer(AParkourCharacter* Player)
+{
+    UE_LOG(LogTemp, Warning, TEXT("KilledByPlayer : %s"), *Player->GetName());
+    if (Player)
+    {
+        AParkourPlayerState* PS = Player->GetPlayerState<AParkourPlayerState>();
+        if (PS)
+        {
             PS->AddScore(InteractionScoreValue);       // Example: Increases score
             bIsActive = false;
+            bbeKilled = false;
         }
     }
 }
