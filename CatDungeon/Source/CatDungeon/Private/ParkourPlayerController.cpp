@@ -105,7 +105,7 @@ void AParkourPlayerController::Endding(bool bIsWinning)
 		if (EndingWidget1) // Check if the widget was created successfully
 		{
 			EndingWidget1->AddToViewport(); // Add the widget to the viewport to show it
-			PlayerHUDWidget->RemoveFromViewport();
+			PlayerHUDWidget->RemoveFromParent();
 			EndingWidget1->UpdateScore(currentScore, bIsWinning);
 		}
 	}

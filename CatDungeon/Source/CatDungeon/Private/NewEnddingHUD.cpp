@@ -17,21 +17,8 @@ void UNewEnddingHUD::UpdateWinStatus(bool IsVictory)
 {
     WinStatus->SetText(IsVictory ? VictoryText : LoseText);
 	if (IsVictory) {
-		OnVictoryEvent();
 	}
 	else
 	{
-		OnDeathEvent();
 	}
-}
-
-void UNewEnddingHUD::OnDeathEvent()
-{
-	UE_LOG(LogTemp, Warning, TEXT("OnDeathEvent called in C++!"));
-
-}
-
-void UNewEnddingHUD::OnVictoryEvent()
-{
-	UE_LOG(LogTemp, Warning, TEXT("OnVictoryEvent called in C++!"));
 }
