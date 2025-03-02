@@ -3,6 +3,8 @@
 #include "ParkourCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUD.h"
+#include "NewEnddingHUD.h"
+
 #include "Kismet/GameplayStatics.h"
 
 
@@ -25,6 +27,7 @@ void AParkourPlayerController::BeginPlay()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, RunningSound, ParkourCharacter->GetActorLocation());
 	}
+
 }
 
 void AParkourPlayerController::Tick(float DeltaTime)
@@ -94,14 +97,16 @@ void AParkourPlayerController::HandleVictory()
 
 void AParkourPlayerController::Endding(bool bIsWinning)
 {
-	if (EndingHUDClass)
+	if (EndingHUD)
 	{
-		EndingWidget = CreateWidget<UPlayerHUD>(this, EndingHUDClass); // Create the widget
-		if (EndingWidget) // Check if the widget was created successfully
+		UE_LOG(LogTemp, Warning, TEXT("Endding: %s"), bIsWinning ? TEXT("True") : TEXT("False"));
+
+		EndingWidget1 = CreateWidget<UNewEnddingHUD>(this, EndingHUD); // Create the widget
+		if (EndingWidget1) // Check if the widget was created successfully
 		{
-			EndingWidget->AddToViewport(); // Add the widget to the viewport to show it
+			EndingWidget1->AddToViewport(); // Add the widget to the viewport to show it
 			PlayerHUDWidget->RemoveFromViewport();
-			EndingWidget->UpdateScore(currentScore);
+			EndingWidget1->UpdateScore(currentScore, bIsWinning);
 		}
 	}
 }

@@ -15,7 +15,7 @@ void UPlayerHUD::UpdateScore(int32 Score)
 {
     if (ScoreText)
     {
-        ScoreText->SetText(FText::AsNumber(Score));
+        ScoreText->SetText(FText::Format(FText::FromString(" {0}"), FText::AsNumber(Score)));
     }
 }
 
