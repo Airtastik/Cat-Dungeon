@@ -172,4 +172,7 @@ private:
 
 	// Function to stop the speed increase
 	void StopSpeedIncrease();
+
+	bool isFinished = false;
+
 };
