@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "CharacterAnimInstance.h"
+#include <ParkourPlayerController.h>
 
 // Sets default values
 AParkourCharacter::AParkourCharacter()
@@ -64,6 +65,7 @@ void AParkourCharacter::BeginPlay()
 	//LowestCameraHeightFor3D = 100.f;
 	GetWorldTimerManager().SetTimer(SpeedTimerHandle, this, &AParkourCharacter::IncreaseMoveSpeed, SpeedInterval, true);
 	CameraFor2D->SetRelativeLocation(FVector(CameraLengthFor2D, CameraZFor2D, CameraHeightFor2D));
+	isFinished = false;
 
 
 }
@@ -87,7 +89,7 @@ void AParkourCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	if (Controller)
+	if (Controller && !isFinished)
 	{
 		//AddMovementInput(GetActorForwardVector(), 1.0f);
 		MoveAlongSpline(DeltaTime);
@@ -142,6 +144,14 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 	if (TrackSegmentsArray.Num() == 0) return;
 	if (CurrentSegmentIndex >= TrackSegmentsArray.Num()) {
 		//TODO: Win
+		AParkourPlayerController* MyPlayerController = Cast<AParkourPlayerController>(GetController());
+
+		if (MyPlayerController)
+		{
+			MyPlayerController->HandleVictory();
+			isFinished = true;
+			TrackSegmentsArray.Empty();
+		}
 		return;
 	}
 

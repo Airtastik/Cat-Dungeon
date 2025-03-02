@@ -75,7 +75,7 @@ protected:
 	TSubclassOf<class UPlayerHUD> PlayerHUDClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<class UPlayerHUD> EndingHUDClass;
+	TSubclassOf<class UNewEnddingHUD> EndingHUD;
 
 	/// <summary>
 	/// The actual widget instance that will be displayed in the player's screen
@@ -84,7 +84,7 @@ protected:
 	class UPlayerHUD* PlayerHUDWidget;
 
 	UPROPERTY()
-	class UPlayerHUD* EndingWidget;
+	class UNewEnddingHUD* EndingWidget1;
 
 	/// <summary>
 	/// Called when the player spawns to create the HUD
@@ -94,4 +94,5 @@ private:
 	class AParkourCharacter* ParkourCharacter;
 
 	int32 currentScore = 0;
+
 };
