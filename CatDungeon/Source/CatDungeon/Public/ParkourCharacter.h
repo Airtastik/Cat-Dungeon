@@ -156,8 +156,7 @@ private:
 	float TargetLaneOffset;
 	float LowestCameraHeight;
 
-
-
+	float JumpTimer;
 	FTimerHandle UncrouchTimer;
 	FTimerHandle UnJumpTimer;
 	FTimerHandle AttackTimer;

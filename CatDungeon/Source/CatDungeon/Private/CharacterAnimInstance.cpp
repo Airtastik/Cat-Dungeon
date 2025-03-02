@@ -28,6 +28,8 @@ void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsCrouching = ParkourCharacter->bIsCrouching;
 	bIsAttacking = ParkourCharacter->bIsAttacking;
 	UpdateSpeed(ParkourCharacter->MoveSpeed);
+	UE_LOG(LogTemp, Warning, TEXT("bIsAttacking: %s"), bIsAttacking ? TEXT("True") : TEXT("False"));
+
 }
 
 void UCharacterAnimInstance::UpdateSpeed(float NewSpeed)

@@ -195,13 +195,7 @@ void AParkourCharacter::MoveAlongSpline(float DeltaTime)
 		FVector CurrentLocation = GetActorLocation();
 
 		TargetLocation.Z = CurrentLocation.Z;
-
-		/*
-		if (bIsIn2DMode) {
-			//keep Z for gravity/jumping
-			TargetLocation.Z = CurrentLocation.Z;
-		}
-		*/
+		
 		SetActorLocation(TargetLocation);
 		
 
@@ -233,6 +227,7 @@ void AParkourCharacter::OnJumpPressed()
 
 	bIsJumping = true;
 	bIsCrouching = false;
+
 	//SpringArmFor3D->bInheritPitch = false;
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
 	if (CharMovement)
@@ -263,7 +258,9 @@ void AParkourCharacter::SwitchLane(int32 LaneIndex)
 
 void AParkourCharacter::Attack()
 {
-	GetWorldTimerManager().SetTimer(AttackTimer, this, &AParkourCharacter::OnJumpRealesed, unJumpTime, false);
+	if (bIsAttacking || bIsJumping || bIsCrouched) return;
+	GetWorldTimerManager().ClearTimer(AttackTimer);
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AParkourCharacter::OnAttackFinished, attackTime, false);
 	bIsAttacking = true;
 
 }
@@ -271,11 +268,6 @@ void AParkourCharacter::Attack()
 void AParkourCharacter::OnAttackFinished()
 {
 	bIsAttacking = false;
-	UCharacterAnimInstance* AnimInstance = Cast<UCharacterAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (AnimInstance)
-	{
-	}
 }
 
 void AParkourCharacter::SwitchTo3DMode()
