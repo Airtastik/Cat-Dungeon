@@ -35,4 +35,10 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* WinStatus;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "CustomEvent")
+	void OnDeathEvent();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "CustomEvent")
+	void OnVictoryEvent();
 };
