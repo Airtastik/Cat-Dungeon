@@ -100,7 +100,7 @@ void AInteractableItemBase::KilledByPlayer(AParkourCharacter* Player)
         {
             PS->AddScore(InteractionScoreValue);       // Example: Increases score
             bIsActive = false;
-            bbeKilled = false;
+            bbeKilled = true;
         }
     }
 }
